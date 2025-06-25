@@ -17,10 +17,7 @@ class _ScreenCategoryState extends State<ScreenCategory>
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
-    CategoryDb().getCatgories().then((value) {
-      debugPrint('Categories Get');
-      debugPrint(value.toString());
-    });
+    CategoryDb().refreshUI();
     super.initState();
   }
 

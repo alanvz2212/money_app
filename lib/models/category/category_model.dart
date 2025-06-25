@@ -24,8 +24,8 @@ class CategoryModel {
   @HiveField(3)
   final CategoryType type;
 
-  CategoryModel(
-    this.id, {
+  CategoryModel({
+    required this.id,
     required this.name,
     required this.type,
     this.isDeleted = false,
