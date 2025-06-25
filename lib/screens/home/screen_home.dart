@@ -27,19 +27,10 @@ class ScreenHome extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           if (selectedIndexNotifier.value == 0) {
-            debugPrint('Add Transactions');
+            // TODO: Add transaction functionality
           } else {
-            debugPrint('Add Catergory');
             showCategoryAddPopup(context);
-            // final sample = CategoryModel(
-            //   DateTime.now().millisecondsSinceEpoch
-            //       .toString(), // Assuming the first positional argument is id of type String
-            //   name: 'Travel',
-            //   type: CategoryType.expense,
-            // );
-            // CategoryDb().insertCategory(sample);
           }
-          debugPrint('object');
         },
         child: Icon(Icons.add),
       ),

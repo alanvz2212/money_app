@@ -5,13 +5,13 @@ import 'package:money_app/models/category/category_model.dart';
 
 const categoryDbName = "category_db";
 
-abstract class CatergoryDbFunctions {
-  Future<List<CategoryModel>> getCatgories();
+abstract class CategoryDbFunctions {
+  Future<List<CategoryModel>> getCategories();
   Future<void> insertCategory(CategoryModel value);
   Future<void> deleteCategory(String categoryID);
 }
 
-class CategoryDb implements CatergoryDbFunctions {
+class CategoryDb implements CategoryDbFunctions {
   CategoryDb._internal(); //named constructor
   static CategoryDb instance =
       CategoryDb._internal(); //singleton instance( object/instance Created)
@@ -28,18 +28,18 @@ class CategoryDb implements CatergoryDbFunctions {
   @override
   Future<void> insertCategory(CategoryModel value) async {
     final categoryDB = await Hive.openBox<CategoryModel>(categoryDbName);
-    await categoryDB.add(value);
+    await categoryDB.put(value.id, value);
     refreshUI();
   }
 
   @override
-  Future<List<CategoryModel>> getCatgories() async {
+  Future<List<CategoryModel>> getCategories() async {
     final categoryDB = await Hive.openBox<CategoryModel>(categoryDbName);
     return categoryDB.values.toList();
   }
 
   Future<void> refreshUI() async {
-    final _allCategories = await getCatgories();
+    final _allCategories = await getCategories();
     incomeCategoryListListener.value.clear();
     expenseCategoryListListener.value.clear();
     await Future.forEach(_allCategories, (CategoryModel category) {
@@ -50,13 +50,14 @@ class CategoryDb implements CatergoryDbFunctions {
       }
     });
     incomeCategoryListListener.notifyListeners();
+
     expenseCategoryListListener.notifyListeners();
   }
 
   @override
   Future<void> deleteCategory(String categoryID) async {
-    final CategoryDb = await Hive.openBox(categoryDbName);
-    CategoryDb.delete(CategoryDb);
+    final categoryDB = await Hive.openBox<CategoryModel>(categoryDbName);
+    await categoryDB.delete(categoryID);
     refreshUI();
   }
 }

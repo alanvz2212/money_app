@@ -45,7 +45,7 @@ Future<void> showCategoryAddPopup(BuildContext context) async {
                 final _type = selectedCategoryNotifier.value;
                 // final _id = DateTime.now().millisecondsSinceEpoch.toString();
                 final _category = CategoryModel(
-                  id: DateTime.fromMillisecondsSinceEpoch.toString(),
+                  id: DateTime.now().millisecondsSinceEpoch.toString(),
                   name: _name,
                   type: _type,
                 );
