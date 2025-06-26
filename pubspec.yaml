@@ -40,12 +40,16 @@ dependencies:
   hive: ^2.2.3
   flutter_launcher_icons: ^0.14.4
   intl: ^0.20.2
+  animate_do: ^3.3.4
+  shimmer: ^3.0.0
+  fl_chart: ^0.68.0
+  google_fonts: ^6.2.1
 
 
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/money-2724241_640.webp"
+  image_path: "assets/bitcoin-225079_1920.png"
 
 dev_dependencies:
   flutter_test:
