@@ -38,6 +38,14 @@ dependencies:
   build_runner: ^2.5.4
   hive_generator: ^2.0.1
   hive: ^2.2.3
+  flutter_launcher_icons: ^0.14.4
+  intl: ^0.20.2
+
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/money-2724241_640.webp"
 
 dev_dependencies:
   flutter_test:
