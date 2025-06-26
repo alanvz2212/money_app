@@ -8,10 +8,10 @@ import 'package:money_app/screens/transactions/screen_transaction.dart';
 class ScreenHome extends StatelessWidget {
   static ValueNotifier<int> selectedIndexNotifier = ValueNotifier(0);
   const ScreenHome({super.key});
-  final _pages = const [ScreenTransaction(), ScreenCategory()];
 
   @override
   Widget build(BuildContext context) {
+    final pages = const [ScreenTransaction(), ScreenCategory()];
     return Scaffold(
       bottomNavigationBar: MoneyManagerBottomNavigation(),
       appBar: AppBar(title: Text('Money Manager'), centerTitle: true),
@@ -19,7 +19,7 @@ class ScreenHome extends StatelessWidget {
         child: ValueListenableBuilder(
           valueListenable: selectedIndexNotifier,
           builder: (BuildContext context, int updatedIndex, _) {
-            return _pages[updatedIndex];
+            return pages[updatedIndex];
           },
         ),
       ),

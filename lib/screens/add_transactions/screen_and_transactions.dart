@@ -53,19 +53,17 @@ class _ScreenAndTransactionsState extends State<ScreenAndTransactions> {
               //Calender
               TextButton.icon(
                 onPressed: () async {
-                  var _selectedDateTemp = await showDatePicker(
+                  final selectedDateTemp = await showDatePicker(
                     context: context,
                     initialDate: DateTime.now(),
                     firstDate: DateTime.now().subtract(Duration(days: 30)),
                     lastDate: DateTime.now(),
                   );
-                  if (_selectedDateTemp == null) {
+                  if (selectedDateTemp == null) {
                     return;
                   } else {
-                    print(_selectedDate.toString());
-
                     setState(() {
-                      _selectedDate = _selectedDateTemp;
+                      _selectedDate = selectedDateTemp;
                     });
                   }
                 },
@@ -116,24 +114,20 @@ class _ScreenAndTransactionsState extends State<ScreenAndTransactions> {
               DropdownButton<String>(
                 hint: const Text('Select Category'),
                 value: _categoryID,
-                items:
-                    (_selectedCategoryType == CategoryType.income
-                            ? CategoryDb().incomeCategoryListListener
-                            : CategoryDb().expenseCategoryListListener)
-                        .value
-                        .map((e) {
-                          return DropdownMenuItem(
-                            value: e.id,
-                            child: Text(e.name),
-                            onTap: () {
-                              print(e.toString());
-                              _selectedCategoryModel = e;
-                            },
-                          );
-                        })
-                        .toList(),
+                items: (_selectedCategoryType == CategoryType.income
+                        ? CategoryProvider.instance.incomeCategoryListListener
+                        : CategoryProvider.instance.expenseCategoryListListener)
+                    .value
+                    .map((e) {
+                  return DropdownMenuItem(
+                    value: e.id,
+                    child: Text(e.name),
+                    onTap: () {
+                      _selectedCategoryModel = e;
+                    },
+                  );
+                }).toList(),
                 onChanged: (selectedValue) {
-                  print(selectedValue);
                   setState(() {
                     _categoryID = selectedValue;
                   });
@@ -154,12 +148,12 @@ class _ScreenAndTransactionsState extends State<ScreenAndTransactions> {
   }
 
   Future<void> addTransaction() async {
-    final _purposeText = _purposeController.text;
-    final _amountText = _amountController.text;
-    if (_purposeText.isEmpty) {
+    final purposeText = _purposeController.text;
+    final amountText = _amountController.text;
+    if (purposeText.isEmpty) {
       return;
     }
-    if (_amountText.isEmpty) {
+    if (amountText.isEmpty) {
       return;
     }
     // if (_categoryID == null) {
@@ -171,17 +165,19 @@ class _ScreenAndTransactionsState extends State<ScreenAndTransactions> {
     if (_selectedDate == null) {
       return;
     }
-    final _parsedAmount = double.tryParse(_amountText);
-    if (_parsedAmount == null) {
+    final parsedAmount = double.tryParse(amountText);
+    if (parsedAmount == null) {
       return;
     }
-    final _model = TransactionModel(
-      Purpose: _purposeText,
-      amount: _parsedAmount,
+    final model = TransactionModel(
+      purpose: purposeText,
+      amount: parsedAmount,
       date: _selectedDate!,
       type: _selectedCategoryType!,
       category: _selectedCategoryModel!,
     );
-    TransactionDb.instance.addTransaction(_model);
+    TransactionDb.instance.addTransaction(model);
+    Navigator.of(context).pop();
+    TransactionDb.instance.refresh();
   }
 }

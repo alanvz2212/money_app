@@ -8,7 +8,7 @@ class IncomeCategory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable: CategoryDb().incomeCategoryListListener,
+      valueListenable: CategoryProvider.instance.incomeCategoryListListener,
       builder: (BuildContext ctx, List<CategoryModel> newList, Widget? _) {
         return ListView.separated(
           itemBuilder: (BuildContext ctx, int index) {

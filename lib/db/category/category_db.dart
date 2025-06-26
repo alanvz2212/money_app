@@ -19,17 +19,11 @@ class CategoryDb implements CategoryDbFunctions {
     return instance;
   }
 
-  ValueNotifier<List<CategoryModel>> incomeCategoryListListener = ValueNotifier(
-    [],
-  );
-  ValueNotifier<List<CategoryModel>> expenseCategoryListListener =
-      ValueNotifier([]);
-
   @override
   Future<void> insertCategory(CategoryModel value) async {
     final categoryDB = await Hive.openBox<CategoryModel>(categoryDbName);
     await categoryDB.put(value.id, value);
-    refreshUI();
+    CategoryProvider.instance.refreshUI();
   }
 
   @override
@@ -38,11 +32,32 @@ class CategoryDb implements CategoryDbFunctions {
     return categoryDB.values.toList();
   }
 
+  @override
+  Future<void> deleteCategory(String categoryID) async {
+    final categoryDB = await Hive.openBox<CategoryModel>(categoryDbName);
+    await categoryDB.delete(categoryID);
+    CategoryProvider.instance.refreshUI();
+  }
+}
+
+class CategoryProvider extends ChangeNotifier {
+  CategoryProvider._internal();
+  static CategoryProvider instance = CategoryProvider._internal();
+  factory CategoryProvider() {
+    return instance;
+  }
+
+  ValueNotifier<List<CategoryModel>> incomeCategoryListListener = ValueNotifier(
+    [],
+  );
+  ValueNotifier<List<CategoryModel>> expenseCategoryListListener =
+      ValueNotifier([]);
+
   Future<void> refreshUI() async {
-    final _allCategories = await getCategories();
+    final allCategories = await CategoryDb.instance.getCategories();
     incomeCategoryListListener.value.clear();
     expenseCategoryListListener.value.clear();
-    await Future.forEach(_allCategories, (CategoryModel category) {
+    await Future.forEach(allCategories, (CategoryModel category) {
       if (category.type == CategoryType.income) {
         incomeCategoryListListener.value.add(category);
       } else {
@@ -50,14 +65,6 @@ class CategoryDb implements CategoryDbFunctions {
       }
     });
     incomeCategoryListListener.notifyListeners();
-
     expenseCategoryListListener.notifyListeners();
-  }
-
-  @override
-  Future<void> deleteCategory(String categoryID) async {
-    final categoryDB = await Hive.openBox<CategoryModel>(categoryDbName);
-    await categoryDB.delete(categoryID);
-    refreshUI();
   }
 }

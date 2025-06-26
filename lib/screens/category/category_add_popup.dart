@@ -7,7 +7,7 @@ ValueNotifier<CategoryType> selectedCategoryNotifier = ValueNotifier(
 );
 
 Future<void> showCategoryAddPopup(BuildContext context) async {
-  final _nameEditingController = TextEditingController();
+  final nameEditingController = TextEditingController();
   showDialog(
     context: context,
     builder: (ctx) {
@@ -17,7 +17,7 @@ Future<void> showCategoryAddPopup(BuildContext context) async {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextFormField(
-              controller: _nameEditingController,
+              controller: nameEditingController,
               decoration: InputDecoration(
                 hintText: 'Category Name',
                 border: OutlineInputBorder(),
@@ -33,24 +33,21 @@ Future<void> showCategoryAddPopup(BuildContext context) async {
               ],
             ),
           ),
-
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
               onPressed: () {
-                final _name = _nameEditingController.text;
-                if (_name.isEmpty) {
+                final name = nameEditingController.text;
+                if (name.isEmpty) {
                   return;
                 }
-                final _type = selectedCategoryNotifier.value;
-                // final _id = DateTime.now().millisecondsSinceEpoch.toString();
-                final _category = CategoryModel(
+                final type = selectedCategoryNotifier.value;
+                final category = CategoryModel(
                   id: DateTime.now().millisecondsSinceEpoch.toString(),
-                  name: _name,
-                  type: _type,
+                  name: name,
+                  type: type,
                 );
-                CategoryDb().insertCategory(_category);
-                // TODO: Save category to database/storage
+                CategoryDb.instance.insertCategory(category);
                 Navigator.of(context).pop();
               },
               child: const Text('Add Category'),
@@ -82,7 +79,6 @@ class RadioButton extends StatelessWidget {
                   return;
                 }
                 selectedCategoryNotifier.value = value;
-                selectedCategoryNotifier.notifyListeners();
               },
             );
           },
