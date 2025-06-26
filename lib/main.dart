@@ -9,7 +9,7 @@ import 'package:money_app/screens/splash_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Set system UI overlay style
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
@@ -19,7 +19,7 @@ Future<void> main() async {
       systemNavigationBarIconBrightness: Brightness.dark,
     ),
   );
-  
+
   await Hive.initFlutter();
   if (!Hive.isAdapterRegistered(CategoryTypeAdapter().typeId)) {
     Hive.registerAdapter(CategoryTypeAdapter());
@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
 
   ThemeData _buildTheme() {
     final baseTextTheme = GoogleFonts.interTextTheme();
-    
+
     return ThemeData(
       useMaterial3: true,
       fontFamily: GoogleFonts.inter().fontFamily,
@@ -65,7 +65,7 @@ class MyApp extends StatelessWidget {
         tertiary: const Color(0xFF06B6D4),
         surface: const Color(0xFFF8FAFC),
       ),
-      
+
       // App Bar Theme
       appBarTheme: AppBarTheme(
         elevation: 0,
@@ -78,7 +78,7 @@ class MyApp extends StatelessWidget {
           color: const Color(0xFF1E293B),
         ),
       ),
-      
+
       // Card Theme
       cardTheme: const CardThemeData(
         elevation: 0,
@@ -89,7 +89,7 @@ class MyApp extends StatelessWidget {
         color: Colors.white,
         surfaceTintColor: Colors.transparent,
       ),
-      
+
       // Elevated Button Theme
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
@@ -105,7 +105,7 @@ class MyApp extends StatelessWidget {
           shadowColor: Colors.transparent,
         ),
       ),
-      
+
       // Floating Action Button Theme
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         elevation: 0,
@@ -113,7 +113,7 @@ class MyApp extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(20)),
         ),
       ),
-      
+
       // Bottom Navigation Bar Theme
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         elevation: 0,
@@ -124,7 +124,7 @@ class MyApp extends StatelessWidget {
         selectedLabelStyle: GoogleFonts.inter(fontWeight: FontWeight.w600),
         unselectedLabelStyle: GoogleFonts.inter(fontWeight: FontWeight.w500),
       ),
-      
+
       // Input Decoration Theme
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
@@ -141,9 +141,12 @@ class MyApp extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           borderSide: const BorderSide(color: Color(0xFF6366F1), width: 2),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 16,
+        ),
       ),
-      
+
       // Text Theme with Google Fonts
       textTheme: baseTextTheme.copyWith(
         headlineLarge: GoogleFonts.inter(
