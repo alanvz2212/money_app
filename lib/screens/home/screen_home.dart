@@ -6,7 +6,6 @@ import 'package:money_app/screens/category/category_add_popup.dart';
 import 'package:money_app/screens/category/screen_category.dart';
 import 'package:money_app/screens/home/widgets/bottom_navigation.dart';
 import 'package:money_app/screens/home/widgets/financial_insights.dart';
-import 'package:money_app/screens/transactions/screen_transaction.dart';
 import 'package:money_app/db/transactions/transaction_db.dart';
 import 'package:money_app/models/transactions/transaction_model.dart';
 import 'package:money_app/models/category/category_model.dart';
@@ -17,11 +16,8 @@ class ScreenHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final pages = [
-      _buildTransactionsPage(context),
-      const ScreenCategory(),
-    ];
-    
+    final pages = [_buildTransactionsPage(context), const ScreenCategory()];
+
     return Scaffold(
       backgroundColor: const Color(0xFFF8FAFC),
       body: SafeArea(
@@ -32,7 +28,7 @@ class ScreenHome extends StatelessWidget {
               duration: const Duration(milliseconds: 800),
               child: _buildCustomAppBar(context),
             ),
-            
+
             // Page Content
             Expanded(
               child: ValueListenableBuilder(
@@ -69,11 +65,7 @@ class ScreenHome extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            Color(0xFF6366F1),
-            Color(0xFF8B5CF6),
-            Color(0xFFA855F7),
-          ],
+          colors: [Color(0xFF6366F1), Color(0xFF8B5CF6), Color(0xFFA855F7)],
           stops: [0.0, 0.5, 1.0],
         ),
         borderRadius: BorderRadius.only(
@@ -143,9 +135,9 @@ class ScreenHome extends StatelessWidget {
                   ),
                 ],
               ),
-              
+
               const SizedBox(height: 24),
-              
+
               // Balance Summary Card
               _buildBalanceSummary(),
             ],
@@ -161,7 +153,7 @@ class ScreenHome extends StatelessWidget {
       builder: (context, List<TransactionModel> transactions, _) {
         double totalIncome = 0;
         double totalExpense = 0;
-        
+
         for (var transaction in transactions) {
           if (transaction.type == CategoryType.income) {
             totalIncome += transaction.amount;
@@ -169,9 +161,9 @@ class ScreenHome extends StatelessWidget {
             totalExpense += transaction.amount;
           }
         }
-        
+
         double balance = totalIncome - totalExpense;
-        
+
         return Container(
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
@@ -204,7 +196,9 @@ class ScreenHome extends StatelessWidget {
               Text(
                 'RS ${balance.toStringAsFixed(2)}',
                 style: TextStyle(
-                  color: balance >= 0 ? const Color(0xFF059669) : const Color(0xFFDC2626),
+                  color: balance >= 0
+                      ? const Color(0xFF059669)
+                      : const Color(0xFFDC2626),
                   fontSize: 36,
                   fontWeight: FontWeight.bold,
                 ),
@@ -253,16 +247,18 @@ class ScreenHome extends StatelessWidget {
     );
   }
 
-  Widget _buildSummaryItem(String title, double amount, Color color, IconData icon) {
+  Widget _buildSummaryItem(
+    String title,
+    double amount,
+    Color color,
+    IconData icon,
+  ) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: color.withOpacity(0.05),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: color.withOpacity(0.1),
-          width: 1,
-        ),
+        border: Border.all(color: color.withOpacity(0.1), width: 1),
       ),
       child: Column(
         children: [
@@ -272,11 +268,7 @@ class ScreenHome extends StatelessWidget {
               color: color.withOpacity(0.1),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(
-              icon,
-              color: color,
-              size: 20,
-            ),
+            child: Icon(icon, color: color, size: 20),
           ),
           const SizedBox(height: 8),
           Text(
@@ -324,7 +316,10 @@ class ScreenHome extends StatelessWidget {
                     ),
                     const Spacer(),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
                       decoration: BoxDecoration(
                         color: const Color(0xFF6366F1).withOpacity(0.1),
                         borderRadius: BorderRadius.circular(20),
@@ -348,7 +343,7 @@ class ScreenHome extends StatelessWidget {
             ],
           ),
         ),
-        
+
         // Transactions List as Sliver
         ValueListenableBuilder(
           valueListenable: TransactionDb.instance.transactionListNotifier,
@@ -399,229 +394,235 @@ class ScreenHome extends StatelessWidget {
                 ),
               );
             }
-            
+
             return SliverPadding(
               padding: const EdgeInsets.only(bottom: 100),
               sliver: SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    final value = newList[index];
-                    final isIncome = value.type == CategoryType.income;
-                    final transactionColor = isIncome 
-                        ? const Color(0xFF059669) 
-                        : const Color(0xFFDC2626);
-                    
-                    return Padding(
-                      padding: EdgeInsets.only(
-                        left: 20,
-                        right: 20,
-                        top: index == 0 ? 8 : 4,
-                        bottom: 4,
-                      ),
-                      child: FadeInUp(
-                        duration: Duration(milliseconds: 300 + (index * 100)),
-                        child: Dismissible(
-                          key: Key(value.id!),
-                          direction: DismissDirection.endToStart,
-                          background: Container(
-                            margin: const EdgeInsets.symmetric(vertical: 4),
-                            decoration: BoxDecoration(
-                              gradient: const LinearGradient(
-                                colors: [Color(0xFFDC2626), Color(0xFFEF4444)],
-                              ),
-                              borderRadius: BorderRadius.circular(20),
+                delegate: SliverChildBuilderDelegate((context, index) {
+                  final value = newList[index];
+                  final isIncome = value.type == CategoryType.income;
+                  final transactionColor = isIncome
+                      ? const Color(0xFF059669)
+                      : const Color(0xFFDC2626);
+
+                  return Padding(
+                    padding: EdgeInsets.only(
+                      left: 20,
+                      right: 20,
+                      top: index == 0 ? 8 : 4,
+                      bottom: 4,
+                    ),
+                    child: FadeInUp(
+                      duration: Duration(milliseconds: 300 + (index * 100)),
+                      child: Dismissible(
+                        key: Key(value.id!),
+                        direction: DismissDirection.endToStart,
+                        background: Container(
+                          margin: const EdgeInsets.symmetric(vertical: 4),
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: [Color(0xFFDC2626), Color(0xFFEF4444)],
                             ),
-                            alignment: Alignment.centerRight,
-                            padding: const EdgeInsets.symmetric(horizontal: 24),
-                            child: const Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.delete_rounded,
-                                  color: Colors.white,
-                                  size: 28,
-                                ),
-                                SizedBox(height: 4),
-                                Text(
-                                  'Delete',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            ),
+                            borderRadius: BorderRadius.circular(20),
                           ),
-                          onDismissed: (direction) {
-                            TransactionDb.instance.deleteTransaction(value.id!);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: const Text('Transaction deleted'),
-                                backgroundColor: const Color(0xFF1E293B),
-                                behavior: SnackBarBehavior.floating,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                action: SnackBarAction(
-                                  label: 'UNDO',
-                                  textColor: const Color(0xFF6366F1),
-                                  onPressed: () {
-                                    TransactionDb.instance.addTransaction(value);
-                                  },
+                          alignment: Alignment.centerRight,
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          child: const Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.delete_rounded,
+                                color: Colors.white,
+                                size: 28,
+                              ),
+                              SizedBox(height: 4),
+                              Text(
+                                'Delete',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
-                            );
-                          },
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(vertical: 4),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.04),
-                                  blurRadius: 10,
-                                  offset: const Offset(0, 2),
-                                ),
-                              ],
+                            ],
+                          ),
+                        ),
+                        onDismissed: (direction) {
+                          TransactionDb.instance.deleteTransaction(value.id!);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: const Text('Transaction deleted'),
+                              backgroundColor: const Color(0xFF1E293B),
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              action: SnackBarAction(
+                                label: 'UNDO',
+                                textColor: const Color(0xFF6366F1),
+                                onPressed: () {
+                                  TransactionDb.instance.addTransaction(value);
+                                },
+                              ),
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(20),
-                              child: Row(
-                                children: [
-                                  // Date Circle
-                                  Container(
-                                    width: 60,
-                                    height: 60,
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        colors: [
-                                          transactionColor.withOpacity(0.1),
-                                          transactionColor.withOpacity(0.05),
-                                        ],
-                                      ),
-                                      borderRadius: BorderRadius.circular(16),
-                                      border: Border.all(
-                                        color: transactionColor.withOpacity(0.2),
-                                        width: 1,
-                                      ),
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          DateFormat('dd').format(value.date),
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                            color: transactionColor,
-                                          ),
-                                        ),
-                                        Text(
-                                          DateFormat('MMM').format(value.date),
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w600,
-                                            color: transactionColor.withOpacity(0.7),
-                                          ),
-                                        ),
+                          );
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.04),
+                                blurRadius: 10,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: Row(
+                              children: [
+                                // Date Circle
+                                Container(
+                                  width: 60,
+                                  height: 60,
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        transactionColor.withOpacity(0.1),
+                                        transactionColor.withOpacity(0.05),
                                       ],
                                     ),
-                                  ),
-                                  
-                                  const SizedBox(width: 16),
-                                  
-                                  // Transaction Details
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Container(
-                                              padding: const EdgeInsets.symmetric(
-                                                horizontal: 8,
-                                                vertical: 4,
-                                              ),
-                                              decoration: BoxDecoration(
-                                                color: transactionColor.withOpacity(0.1),
-                                                borderRadius: BorderRadius.circular(8),
-                                              ),
-                                              child: Text(
-                                                value.category.name,
-                                                style: TextStyle(
-                                                  color: transactionColor,
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(height: 8),
-                                        Text(
-                                          value.purpose,
-                                          style: const TextStyle(
-                                            color: Color(0xFF1E293B),
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        const SizedBox(height: 4),
-                                        Text(
-                                          DateFormat('EEEE, MMM dd, yyyy').format(value.date),
-                                          style: const TextStyle(
-                                            color: Color(0xFF64748B),
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ],
+                                    borderRadius: BorderRadius.circular(16),
+                                    border: Border.all(
+                                      color: transactionColor.withOpacity(0.2),
+                                      width: 1,
                                     ),
                                   ),
-                                  
-                                  // Amount and Icon
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Container(
-                                        padding: const EdgeInsets.all(8),
-                                        decoration: BoxDecoration(
-                                          color: transactionColor.withOpacity(0.1),
-                                          borderRadius: BorderRadius.circular(12),
-                                        ),
-                                        child: Icon(
-                                          isIncome 
-                                              ? Icons.trending_up_rounded 
-                                              : Icons.trending_down_rounded,
+                                      Text(
+                                        DateFormat('dd').format(value.date),
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
                                           color: transactionColor,
-                                          size: 20,
                                         ),
                                       ),
-                                      const SizedBox(height: 8),
                                       Text(
-                                        '${isIncome ? '+' : '-'} RS ${value.amount.toStringAsFixed(2)}',
+                                        DateFormat('MMM').format(value.date),
                                         style: TextStyle(
-                                          color: transactionColor,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600,
+                                          color: transactionColor.withOpacity(
+                                            0.7,
+                                          ),
                                         ),
                                       ),
                                     ],
                                   ),
-                                ],
-                              ),
+                                ),
+
+                                const SizedBox(width: 16),
+
+                                // Transaction Details
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 8,
+                                              vertical: 4,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: transactionColor
+                                                  .withOpacity(0.1),
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                            child: Text(
+                                              value.category.name,
+                                              style: TextStyle(
+                                                color: transactionColor,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Text(
+                                        value.purpose,
+                                        style: const TextStyle(
+                                          color: Color(0xFF1E293B),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        DateFormat(
+                                          'EEEE, MMM dd, yyyy',
+                                        ).format(value.date),
+                                        style: const TextStyle(
+                                          color: Color(0xFF64748B),
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+
+                                // Amount and Icon
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.all(8),
+                                      decoration: BoxDecoration(
+                                        color: transactionColor.withOpacity(
+                                          0.1,
+                                        ),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Icon(
+                                        isIncome
+                                            ? Icons.trending_up_rounded
+                                            : Icons.trending_down_rounded,
+                                        color: transactionColor,
+                                        size: 20,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      '${isIncome ? '+' : '-'} RS ${value.amount.toStringAsFixed(2)}',
+                                      style: TextStyle(
+                                        color: transactionColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
                         ),
                       ),
-                    );
-                  },
-                  childCount: newList.length,
-                ),
+                    ),
+                  );
+                }, childCount: newList.length),
               ),
             );
           },
@@ -639,10 +640,7 @@ class ScreenHome extends StatelessWidget {
             gradient: const LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [
-                Color(0xFF6366F1),
-                Color(0xFF8B5CF6),
-              ],
+              colors: [Color(0xFF6366F1), Color(0xFF8B5CF6)],
             ),
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
@@ -661,7 +659,9 @@ class ScreenHome extends StatelessWidget {
           child: FloatingActionButton(
             onPressed: () {
               if (selectedIndex == 0) {
-                Navigator.of(context).pushNamed(ScreenAndTransactions.routeName);
+                Navigator.of(
+                  context,
+                ).pushNamed(ScreenAndTransactions.routeName);
               } else {
                 showCategoryAddPopup(context);
               }
