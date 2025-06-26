@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:money_app/models/category/category_model.dart';
+import 'package:money_app/models/transactions/transaction_model.dart';
+import 'package:money_app/screens/add_transactions/screen_and_transactions.dart';
 import 'package:money_app/screens/splash_screen.dart';
 
 Future<void> main() async {
@@ -13,6 +15,10 @@ Future<void> main() async {
   if (!Hive.isAdapterRegistered(CategoryModelAdapter().typeId)) {
     Hive.registerAdapter(CategoryModelAdapter());
   }
+  if (!Hive.isAdapterRegistered(TransactionModelAdapter().typeId)) {
+    Hive.registerAdapter(TransactionModelAdapter());
+  }
+
   runApp(MyApp());
 }
 
@@ -24,6 +30,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(primaryColor: Colors.green),
       home: SplashScreen(),
+      routes: {
+        ScreenAndTransactions.routeName: (ctx) => const ScreenAndTransactions(),
+      },
     );
   }
 }

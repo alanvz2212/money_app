@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_app/db/category/category_db.dart';
 import 'package:money_app/models/category/category_model.dart';
-import 'package:money_app/screens/category/income_category.dart';
 
 class ExpenseCategory extends StatelessWidget {
   const ExpenseCategory({super.key});
